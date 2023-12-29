@@ -38,7 +38,7 @@ resource "aws_db_parameter_group" "main" {
 resource "aws_rds_cluster" "main" {
   cluster_identifier                = "${local.name_prefix}-cluster"
   engine                            = var.engine
-  engine_version                    = "5.7.mysql_aurora.2.03.2"
+  engine_version                    = "5.7.mysql_aurora.2.13.3"
   database_name                     = data.aws_ssm_parameter.database_name.value
   master_username                   = data.aws_ssm_parameter.master_username.value
   master_password                   = data.aws_ssm_parameter.master_password.value
