@@ -39,6 +39,7 @@ resource "aws_rds_cluster" "main" {
   cluster_identifier                = "${local.name_prefix}-cluster"
   engine                            = var.engine
   engine_version                    = var.engine_version
+  db_subnet_group_name              = aws_db_subnet_group.main.name
   database_name                     = data.aws_ssm_parameter.database_name.value
   master_username                   = data.aws_ssm_parameter.master_username.value
   master_password                   = data.aws_ssm_parameter.master_password.value
@@ -58,4 +59,7 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
   engine             = aws_rds_cluster.main.engine
   engine_version     = aws_rds_cluster.main.engine_version
 }
+
+
+
 
