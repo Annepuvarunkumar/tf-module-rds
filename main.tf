@@ -30,8 +30,8 @@ resource "aws_security_group" "main" {
 
 
 resource "aws_db_parameter_group" "main" {
-  name   = "${local.name_prefix}-pg"
-  family = var.engine_family
+  name        = "${local.name_prefix}-pg"
+  family      = var.engine_family
   tags        = merge(local.tags, {Name = "${local.name_prefix}-pg"})
 }
 
@@ -48,5 +48,14 @@ resource "aws_rds_cluster" "main" {
   vpc_security_group_ids            = [aws_security_group.main.id]
   skip_final_snapshot               = var.skip_final_snapshot
   tags                              = merge(local.tags, {Name = "${local.name_prefix}-cluster"})
+}
+
+resource "aws_rds_cluster_instance" "cluster_instances" {
+  count              = var.instance_count
+  identifier         = "${local.name_prefix}-cluster-instance-${count.index+1}"
+  cluster_identifier = aws_rds_cluster.main.id
+  instance_class     = var.instance_class
+  engine             = aws_rds_cluster.main.engine
+  engine_version     = aws_rds_cluster.main.engine_version
 }
 
